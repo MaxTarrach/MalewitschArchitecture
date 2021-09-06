@@ -3,13 +3,11 @@ function setup() {
   createCanvas(1080, 720);
   background(200);
 
-  centerX = 540;
-  centerY = 360;
-
   // variables 
-
   let nPoints = 150;
   let radius = 100;
+  centerX = 540;
+  centerY = 360;
 
 
   // Set colors
@@ -87,12 +85,19 @@ return points;
 
  }
 
- function centerTriangle(){
+ // Calculate center coordinate of triangle
+ function centerTriangle(firstCornerTriangle, secondCornerTriangle, thirdCornerTriangle){
 
 
-  return coordinates;
+  x = (firstCornerTriangle[0] + secondCornerTriangle[0] + thirdCornerTriangle[0]) / 3;
+  y = (firstCornerTriangle[1] + secondCornerTriangle[1] + thirdCornerTriangle[1]) / 3;
+
+  coordinate = [x, y]
+
+  return coordinate;
  };
 
+ // calculate euclidean distance between triangle center and image center
  function euclideanDistance(x1, x2, y1, y2){
 
   const euclideanDistance = Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
