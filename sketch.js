@@ -1,27 +1,37 @@
 function setup() {
   // Create the canvas
-  createCanvas(1080, 720);
-  background(200);
+  createCanvas(1080, 720, WEBGL);
+  
+  //cam = createCamera();
 
-  // variables 
-  let nPoints = 150;
-  let radius = 100;
-  centerX = 540;
-  centerY = 360;
+  //cam.move(540, 500, 0);
 
+   // variables 
+   let nPoints = 150;
+   let radius = 100;
+   centerX = 540;
+   centerY = 360;
+
+   // points 2-dimensional array 
+  points = samplePoint(nPoints, radius);
+
+  // Collection of triangles
+  delauny = triangulatePoints(points);
+
+
+}
+
+function draw(){
+
+  background(100);
+
+  camera(540, 100 , 500, 540, 360, 150, 1, 1, 0);
 
   // Set colors
   fill(204, 101, 192, 127);
   stroke(127, 63, 120);
 
-
-  // points 2-dimensional array 
-  points = samplePoint(nPoints, radius);
-
-  console.log(points);
-
-  // Collection of triangles
-  delauny = triangulatePoints(points);
+  //drawShape();
 
   // Ein Dreieck an Stelle 3 
   console.log(delauny[3]);
@@ -33,11 +43,56 @@ function setup() {
   console.log(delauny[3][1]);
   console.log(delauny[3][2]);
 
+  // Array with all centroid positions
+  centroids = [];
+
+  for (let i = 0; i < delauny.length; i++) {
+
+    centroid = centroidTriangle(delauny[i][0], delauny[i][1], delauny[i][2])
+
+    centroids.push(centroid)
+
+  }
+
+  console.log(centroids);
+
+
   for (let i = 0; i < delauny.length; i++){
 
     triangle(delauny[i][0][0], delauny[i][0][1], delauny[i][1][0], delauny[i][1][1], delauny[i][2][0], delauny[i][2][1]);
+
+   }
+
+
+  for (let i = 0; i < delauny; i++){
+
+    push();
+    
+    
+    pop();
+
+
+
+
   }
 
+
+
+}
+
+function drawShape(){
+
+  fill("#555555");
+  beginShape();
+
+  vertex(0, 0, 0);
+  vertex(1, 0, 0);
+  vertex(0.5, 1, 0);
+  vertex(0, 0, 100);
+  vertex(1, 0, 100);
+  vertex(0.5, 1, 100);
+  
+  endShape(CLOSE);
 
 }
 
@@ -86,8 +141,7 @@ return points;
  }
 
  // Calculate center coordinate of triangle
- function centerTriangle(firstCornerTriangle, secondCornerTriangle, thirdCornerTriangle){
-
+ function centroidTriangle(firstCornerTriangle, secondCornerTriangle, thirdCornerTriangle){
 
   x = (firstCornerTriangle[0] + secondCornerTriangle[0] + thirdCornerTriangle[0]) / 3;
   y = (firstCornerTriangle[1] + secondCornerTriangle[1] + thirdCornerTriangle[1]) / 3;
