@@ -118,7 +118,7 @@ function draw(){
   
     rotateX(0);
     rotateY(0);
-    rotateZ(millis() / 1000);
+    rotateZ(0);
     drawShape(delauny[i][0], delauny[i][1], delauny[i][2], heights[i]);
     pop();
   
@@ -130,7 +130,8 @@ function draw(){
 // (0,0,0) (100,0,0) (50,50,0)
 function drawShape(coordinate0, coordinate1, coordinate2, height){
 
-  ambientMaterial(250);
+  specularMaterial(250);
+  shininess(15);
   
 
   // Bottom Triangle
