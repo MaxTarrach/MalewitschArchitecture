@@ -25,13 +25,27 @@ function draw(){
 
   background(100);
 
-  camera(540, 100 , 500, 540, 360, 150, 1, 1, 0);
+  camera(540 , 550, 400, 540, 360, 50);
+  orbitControl();
 
   // Set colors
   fill(204, 101, 192, 127);
   stroke(127, 63, 120);
 
-  //drawShape();
+  //push();
+  //normalMaterial();
+  //translate(540, 360);
+  //box(150);
+  //pop();  
+
+  push();
+  
+  translate(540,360, 0);
+  rotateX(0);
+  rotateY(0);
+  rotateZ(0);
+  drawShape();
+  pop();
 
   // Ein Dreieck an Stelle 3 
   console.log(delauny[3]);
@@ -83,16 +97,54 @@ function draw(){
 function drawShape(){
 
   fill("#555555");
+  
+
+  // Bottom Triangle
   beginShape();
 
   vertex(0, 0, 0);
-  vertex(1, 0, 0);
-  vertex(0.5, 1, 0);
-  vertex(0, 0, 100);
-  vertex(1, 0, 100);
-  vertex(0.5, 1, 100);
+  vertex(100, 0, 0);
+  vertex(50, 50, 0);
+    
+  endShape(CLOSE);
+
+  // Top Triangle
+  beginShape();
+
+  vertex(100, 0, 200);
+  vertex(0, 0, 200);
+  vertex(50, 50, 200);
+
+  endShape(CLOSE);
+
+  beginShape();
+
+  vertex(0,0,0);
+  vertex(50,50,0);
+  vertex(50,50,200);
+  vertex(0,0,200);
   
   endShape(CLOSE);
+
+  beginShape();
+
+  vertex(100, 0, 0);
+  vertex(100,0,200);
+  vertex(0,0,200);
+  vertex(0,0,0);
+
+  endShape(CLOSE);
+
+  beginShape();
+
+  vertex(100, 0, 200);
+  vertex(50, 50 ,200);
+  vertex(50, 50, 0);
+  vertex(100 , 0, 0);
+
+  endShape(CLOSE);
+
+
 
 }
 
