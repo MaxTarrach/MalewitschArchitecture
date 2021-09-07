@@ -2,13 +2,16 @@ function setup() {
   // Create the canvas
   createCanvas(1080, 720, WEBGL);
   
-  //cam = createCamera();
+  let fr = 30;
 
+  //cam = createCamera();
+  frameRate(fr);
+  
   //cam.move(540, 500, 0);
 
    // variables 
    let nPoints = 150;
-   let radius = 100;
+   let radius = 150;
    centerX = 540;
    centerY = 360;
 
@@ -23,14 +26,23 @@ function setup() {
 
 function draw(){
 
-  background(100);
+  background(10);
 
-  camera(540 , 550, 400, 540, 360, 50);
-  orbitControl();
+  camera(540 , 670, 200, 540, 360, 50);
+
+  let locX = mouseX - height / 2;
+  let locY = mouseY - width / 2;
+
+  let dirX = (mouseX / width - 0.5) * 2;
+  let dirY = (mouseY / height - 0.5) * 2;
+
+  ambientLight(30, 30, 30);
+  // pointLight(140, 140, 140, locX, locY, 600);
+  directionalLight(80, 80, 80, 1, 1, -1);
 
   // Set colors
-  fill(204, 101, 192, 127);
-  stroke(127, 63, 120);
+  fill(162, 160, 165);
+  stroke(162, 160, 165);
 
   //push();
   //normalMaterial();
@@ -38,24 +50,18 @@ function draw(){
   //box(150);
   //pop();  
 
-  push();
+
   
-  translate(540,360, 0);
-  rotateX(0);
-  rotateY(0);
-  rotateZ(0);
-  drawShape();
-  pop();
 
   // Ein Dreieck an Stelle 3 
-  console.log(delauny[3]);
+  //console.log(delauny[3]);
 
-  console.log(delauny.length);
+  //console.log(delauny.length);
   
   // Alle 3 x/y Koordinatenpaare des Dreiecks an stelle 3
-  console.log(delauny[3][0]);
-  console.log(delauny[3][1]);
-  console.log(delauny[3][2]);
+  //console.log(delauny[3][0]);
+  //console.log(delauny[3][1]);
+  //console.log(delauny[3][2][0]);
 
   // Array with all centroid positions
   centroids = [];
@@ -68,7 +74,21 @@ function draw(){
 
   }
 
-  console.log(centroids);
+  //console.log(centroids);
+
+  heights = [];
+
+  for (let i=0; i < delauny.length; i++){
+
+    height = euclideanDistance(centroids[i][0], centroids[i][1], centerX, centerY);
+
+    height = 150 - height;
+
+    heights.push(height);
+    
+  }
+
+  console.log(heights);
 
 
   for (let i = 0; i < delauny.length; i++){
@@ -84,63 +104,77 @@ function draw(){
     
     
     pop();
-
-
-
-
   }
 
+
+  for (let i = 0; i < delauny.length; i++) {
+
+    push();
+    
+    //x = [0, 0];
+    //y = [100, 0];
+    //z = [50, 50];
+    //height = 200;
+  
+    rotateX(0);
+    rotateY(0);
+    rotateZ(millis() / 1000);
+    drawShape(delauny[i][0], delauny[i][1], delauny[i][2], heights[i]);
+    pop();
+  
+  }
 
 
 }
 
-function drawShape(){
+// (0,0,0) (100,0,0) (50,50,0)
+function drawShape(coordinate0, coordinate1, coordinate2, height){
 
-  fill("#555555");
+  ambientMaterial(250);
   
 
   // Bottom Triangle
   beginShape();
 
-  vertex(0, 0, 0);
-  vertex(100, 0, 0);
-  vertex(50, 50, 0);
+  vertex(coordinate0[0], coordinate0[1], 0);
+  vertex(coordinate1[0], coordinate1[1], 0);
+  vertex(coordinate2[0], coordinate2[1], 0);
     
   endShape(CLOSE);
 
   // Top Triangle
   beginShape();
 
-  vertex(100, 0, 200);
-  vertex(0, 0, 200);
-  vertex(50, 50, 200);
+  vertex(coordinate1[0], coordinate1[1], height);
+  vertex(coordinate0[0], coordinate0[1], height);
+  vertex(coordinate2[0], coordinate2[1], height);
 
   endShape(CLOSE);
 
   beginShape();
 
-  vertex(0,0,0);
-  vertex(50,50,0);
-  vertex(50,50,200);
-  vertex(0,0,200);
+  vertex(coordinate0[0], coordinate0[1], 0);
+  vertex(coordinate2[0], coordinate2[1], 0);
+  vertex(coordinate2[0], coordinate2[1], height);
+  vertex(coordinate0[0], coordinate0[1], height);
   
   endShape(CLOSE);
 
   beginShape();
 
-  vertex(100, 0, 0);
-  vertex(100,0,200);
-  vertex(0,0,200);
-  vertex(0,0,0);
+  vertex(coordinate1[0], coordinate1[1], 0);
+  vertex(coordinate1[0], coordinate1[1], height);
+  vertex(coordinate0[0], coordinate0[1], height);
+  vertex(coordinate0[0], coordinate0[1], 0);
 
   endShape(CLOSE);
 
   beginShape();
 
-  vertex(100, 0, 200);
-  vertex(50, 50 ,200);
-  vertex(50, 50, 0);
-  vertex(100 , 0, 0);
+  vertex(coordinate1[0], coordinate1[1], height);
+  vertex(coordinate2[0], coordinate2[1], height);
+  vertex(coordinate2[0], coordinate2[1], 0);
+  vertex(coordinate1[0], coordinate1[1], 0);
 
   endShape(CLOSE);
 
@@ -204,9 +238,9 @@ return points;
  };
 
  // calculate euclidean distance between triangle center and image center
- function euclideanDistance(x1, x2, y1, y2){
+ function euclideanDistance(triangleX, triangleY, centerX, centerY){
 
-  const euclideanDistance = Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
+  const euclideanDistance = Math.sqrt((triangleX - centerX) ** 2 + (triangleY - centerY) ** 2);
 
   return euclideanDistance; 
  }
