@@ -12,8 +12,8 @@ function setup() {
    // variables 
    let nPoints = 150;
    let radius = 150;
-   centerX = 540;
-   centerY = 360;
+   centerX = 0;
+   centerY = 0;
 
    // points 2-dimensional array 
   points = samplePoint(nPoints, radius);
@@ -28,7 +28,7 @@ function draw(){
 
   background(10);
 
-  camera(540 , 670, 200, 540, 360, 50);
+  camera(0 , 300, 200, 0, 0, 50);
 
   let locX = mouseX - height / 2;
   let locY = mouseY - width / 2;
@@ -37,38 +37,18 @@ function draw(){
   let dirY = (mouseY / height - 0.5) * 2;
 
   ambientLight(30, 30, 30);
-  // pointLight(140, 140, 140, locX, locY, 600);
   directionalLight(80, 80, 80, 1, 1, -1);
 
   // Set colors
   fill(162, 160, 165);
-  stroke(162, 160, 165);
-
-  //push();
-  //normalMaterial();
-  //translate(540, 360);
-  //box(150);
-  //pop();  
-
-
-  
-
-  // Ein Dreieck an Stelle 3 
-  //console.log(delauny[3]);
-
-  //console.log(delauny.length);
-  
-  // Alle 3 x/y Koordinatenpaare des Dreiecks an stelle 3
-  //console.log(delauny[3][0]);
-  //console.log(delauny[3][1]);
-  //console.log(delauny[3][2][0]);
+  stroke(0, 0, 0);
 
   // Array with all centroid positions
   centroids = [];
 
   for (let i = 0; i < delauny.length; i++) {
 
-    centroid = centroidTriangle(delauny[i][0], delauny[i][1], delauny[i][2])
+    centroid = centroidTriangle(delauny[i][0], delauny[i][1], delauny[i][2]);
 
     centroids.push(centroid)
 
@@ -98,32 +78,17 @@ function draw(){
    }
 
 
-  for (let i = 0; i < delauny; i++){
-
-    push();
-    
-    
-    pop();
-  }
-
-
   for (let i = 0; i < delauny.length; i++) {
 
     push();
     
-    //x = [0, 0];
-    //y = [100, 0];
-    //z = [50, 50];
-    //height = 200;
-  
     rotateX(0);
     rotateY(0);
-    rotateZ(0);
+    rotateZ(millis() / 10000);
     drawShape(delauny[i][0], delauny[i][1], delauny[i][2], heights[i]);
     pop();
   
   }
-
 
 }
 
@@ -194,8 +159,8 @@ var points = [[]];
     var1 = radius * Math.sqrt(Math.random());
     var2 = 2 * Math.PI * Math.random();
 
-    x = (var1 * Math.cos(var2)) + 1080/2;
-    y = (var1 * Math.sin(var2)) + 720/2;
+    x = (var1 * Math.cos(var2));
+    y = (var1 * Math.sin(var2));
 
     point(x, y);
 
