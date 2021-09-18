@@ -36,12 +36,13 @@ function draw(){
   let dirX = (mouseX / width - 0.5) * 2;
   let dirY = (mouseY / height - 0.5) * 2;
 
-  ambientLight(30, 30, 30);
+  ambientLight(20, 20, 20);
   directionalLight(80, 80, 80, 1, 1, -1);
+  directionalLight(80, 80, 80, -1, 1, -1);
 
   // Set colors
   fill(162, 160, 165);
-  stroke(0, 0, 0);
+  stroke(30, 30, 30);
 
   // Array with all centroid positions
   centroids = [];
